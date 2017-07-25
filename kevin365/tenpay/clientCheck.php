@@ -20,9 +20,9 @@ $key = "8934e7d15453e97507ef794cf7b0519d";
 
 
 /* 创建支付请求对象 */
-$reqHandler = new \kevin\tenpay\src\CheckRequestHandler();
+$reqHandler = new \kevin365\tenpay\src\CheckRequestHandler();
 //通信对象
-$httpClient = new TenpayHttpClient();
+$httpClient = new \kevin365\tenpay\src\client\TenpayHttpClient();
 
 
 //-----------------------------

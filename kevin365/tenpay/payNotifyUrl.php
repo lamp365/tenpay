@@ -1,7 +1,9 @@
 <?php
+
 //---------------------------------------------------------
-//财付通即时到帐支付页面回调示例，商户按照此文档进行开发即可
+//财付通即时到帐支付后台回调示例，商户按照此文档进行开发即可
 //---------------------------------------------------------
+
 require (__DIR__."/src/ResponseHandler.php");
 require (__DIR__."/src/RequestHandler.php");
 require (__DIR__ . "/src/client/ClientResponseHandler.php");
@@ -15,7 +17,7 @@ $key = "8934e7d15453e97507ef794cf7b0519d";
 
 
 /* 创建支付应答对象 */
-$resHandler = new \kevin\tenpay\src\ResponseHandler();
+$resHandler = new \kevin365\tenpay\src\ResponseHandler();
 $resHandler->setKey($key);
 
 //判断签名
@@ -26,7 +28,7 @@ if($resHandler->isTenpaySign()) {
 
 	//通过通知ID查询，确保通知来至财付通
 	//创建查询请求
-	$queryReq = new \kevin\tenpay\src\RequestHandler();
+	$queryReq = new \kevin365\tenpay\src\RequestHandler();
 	$queryReq->init();
 	$queryReq->setKey($key);
 	$queryReq->setGateUrl("https://gw.tenpay.com/gateway/verifynotifyid.xml");
@@ -34,7 +36,7 @@ if($resHandler->isTenpaySign()) {
 	$queryReq->setParameter("notify_id", $notify_id);
 
 	//通信对象
-	$httpClient = new \kevin\tenpay\src\client\TenpayHttpClient();
+	$httpClient = new \kevin365\tenpay\src\client\TenpayHttpClient();
 	$httpClient->setTimeOut(5);
 	//设置请求内容
 	$httpClient->setReqContent($queryReq->getRequestURL());
@@ -42,7 +44,7 @@ if($resHandler->isTenpaySign()) {
 	//后台调用
 	if($httpClient->call()) {
 		//设置结果参数
-		$queryRes = new \kevin\tenpay\src\client\ClientResponseHandler();
+		$queryRes = new \kevin365\tenpay\src\client\ClientResponseHandler();
 		$queryRes->setContent($httpClient->getResContent());
 		$queryRes->setKey($key);
 
@@ -64,17 +66,17 @@ if($resHandler->isTenpaySign()) {
 
 			//处理数据库逻辑
 			//注意交易单不要重复处理
-			//!!!注意判断返回金额!!!
+			//注意判断返回金额
 
 			//------------------------------
 			//处理业务完毕
 			//------------------------------
-			echo "<br/>" . "支付成功" . "<br/>";
+			echo "success";
 
 		} else {
 			//错误时，返回结果可能没有签名，写日志trade_state、retcode、retmsg看失败详情。
 			//echo "验证签名失败 或 业务错误信息:trade_state=" . $queryRes->getParameter("trade_state") . ",retcode=" . $queryRes->getParameter("retcode"). ",retmsg=" . $queryRes->getParameter("retmsg") . "<br/>" ;
-			echo "<br/>" . "支付失败" . "<br/>";
+			echo "fail";
 		}
 
 		//获取查询的debug信息,建议把请求、应答内容、debug信息，通信返回码写入日志，方便定位问题
@@ -88,15 +90,19 @@ if($resHandler->isTenpaySign()) {
 		*/
 	}else {
 		//通信失败
-		//echo "fail";
-		//后台调用通信失败,写日志，方便定位问题，这些信息注意保密，最好不要打印给用户
-		echo "<br>订单通知查询失败:" . $httpClient->getResponseCode() ."," . $httpClient->getErrInfo() . "<br>";
+		echo "fail";
+		//后台调用通信失败,写日志，方便定位问题
+		//echo "<br>call err:" . $httpClient->getResponseCode() ."," . $httpClient->getErrInfo() . "<br>";
 	}
+
+
 } else {
-	//签名错误
-	echo "<br>签名失败<br>";
+	//回调签名错误
+	echo "fail";
+	//echo "<br>签名失败<br>";
 }
 
 //获取debug信息,建议把debug信息写入日志，方便定位问题
 //echo $resHandler->getDebugInfo() . "<br>";
+
 ?>

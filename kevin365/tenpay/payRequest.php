@@ -23,7 +23,7 @@ $out_trade_no = date("YmdHis") . $randNum;
 
 
 /* 创建支付请求对象 */
-$reqHandler = new \kevin\tenpay\src\RequestHandler();
+$reqHandler = new \kevin365\tenpay\src\RequestHandler();
 $reqHandler->init();
 $reqHandler->setKey($key);
 $reqHandler->setGateUrl("https://gw.tenpay.com/gateway/pay.htm");

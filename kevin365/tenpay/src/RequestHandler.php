@@ -1,5 +1,5 @@
 <?php
-namespace kevin\tenpay\src;
+namespace kevin365\tenpay\src;
 /**
  * 请求类
  * ============================================================================

@@ -5,7 +5,7 @@
  * Date: 2017/7/25
  * Time: 18:32
  */
-namespace kevin\tenpay;
+namespace kevin365\tenpay;
 
 class Tenpay{
 
@@ -185,7 +185,7 @@ class Tenpay{
         $key =  $this->tenpay_config['key'];
 
         /* 创建支付应答对象 */
-        $resHandler = new \kevin\tenpay\src\ResponseHandler();
+        $resHandler = new src\ResponseHandler();
         $resHandler->setKey($key);
 
         //判断签名

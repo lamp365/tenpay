@@ -15,7 +15,7 @@
  * ============================================================================
  *
  */
-namespace kevin\tenpay\src;
+namespace kevin365\tenpay\src;
 
 class CheckRequestHandler extends RequestHandler {
 

@@ -12,7 +12,7 @@ $tenpay_config = array(
     'return_url' => 'http://baidu.com',
     'notify_url' => 'http://baidu.com',
 );
-$a = new kevin\tenpay\Tenpay($tenpay_config);
+$a = new kevin365\tenpay\Tenpay($tenpay_config);
 $data['ordersn'] = date('YmdHis').uniqid();
 $data['title']   = '测试商品';
 $data['price']   = '1';

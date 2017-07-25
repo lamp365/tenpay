@@ -29,7 +29,7 @@
     "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
-            "kevin\\tenpay\\": "kevin/tenpay"
+            "kevin365\\tenpay\\": "kevin365/tenpay"
         }
     },
     "repositories": {

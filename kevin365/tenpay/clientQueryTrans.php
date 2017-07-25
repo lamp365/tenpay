@@ -1,13 +1,13 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>退款后台调用示例</title>
+	<title>订单查询后台调用示例</title>
 </head>
 <body>
 
 <?php
 //---------------------------------------------------------
-//财付通退款后台调用示例，商户按照此文档进行开发即可
+//财付通订单查后台调用示例，商户按照此文档进行开发即可
 //---------------------------------------------------------
 
 require (__DIR__."/src/RequestHandler.php");
@@ -25,13 +25,13 @@ $key = "8934e7d15453e97507ef794cf7b0519d";
 
 
 /* 创建支付请求对象 */
-$reqHandler = new \kevin\tenpay\src\RequestHandler();
+$reqHandler = new \kevin365\tenpay\src\RequestHandler();
 
 //通信对象
-$httpClient = new TenpayHttpClient();
+$httpClient = new \kevin365\tenpay\src\client\TenpayHttpClient();
 
 //应答对象
-$resHandler = new ClientResponseHandler();
+$resHandler = new \kevin365\tenpay\src\client\ClientResponseHandler();
 
 //-----------------------------
 //设置请求参数
@@ -39,31 +39,17 @@ $resHandler = new ClientResponseHandler();
 $reqHandler->init();
 $reqHandler->setKey($key);
 
-$reqHandler->setGateUrl("https://mch.tenpay.com/refundapi/gateway/refund.xml");
+$reqHandler->setGateUrl("https://gw.tenpay.com/gateway/normalorderquery.xml");
 $reqHandler->setParameter("partner", $partner);
-
 //out_trade_no和transaction_id至少一个必填，同时存在时transaction_id优先
-//$reqHandler->setParameter("out_trade_no", "201101121111462844");
-$reqHandler->setParameter("transaction_id", "1900000109201101120023707085");
-//必须保证全局唯一，同个退款单号财付通认为是同笔请求
-$reqHandler->setParameter("out_refund_no", "2011032400002");
-$reqHandler->setParameter("total_fee", "2");
-$reqHandler->setParameter("refund_fee", "1");
-$reqHandler->setParameter("op_user_id", "1900000109");
-//操作员密码,MD5处理
-$reqHandler->setParameter("op_user_passwd", md5("111111"));
-//接口版本号,取值1.1
-$reqHandler->setParameter("service_version", "1.1");
+$reqHandler->setParameter("out_trade_no", "201009151621261820");
+//$reqHandler->setParameter("transaction_id", "2000000501201004300000000442");
+
 
 
 //-----------------------------
 //设置通信参数
 //-----------------------------
-//设置PEM证书，pfx证书转pem方法：openssl pkcs12 -in 2000000501.pfx  -out 2000000501.pem
-//证书必须放在用户下载不到的目录，避免证书被盗取
-$httpClient->setCertInfo("C:\\key\\1900000109.pem", "1900000109");
-//设置CA
-$httpClient->setCaInfo("C:\\key\\cacert.pem");
 $httpClient->setTimeOut(5);
 //设置请求内容
 $httpClient->setReqContent($reqHandler->getRequestURL());
@@ -80,20 +66,21 @@ if($httpClient->call()) {
 		//取结果参数做业务处理
 		//商户订单号
 		$out_trade_no = $resHandler->getParameter("out_trade_no");
+
 		//财付通订单号
 		$transaction_id = $resHandler->getParameter("transaction_id");
-		//商户退款单号
-		$out_refund_no = $resHandler->getParameter("out_refund_no");
-		//财付通退款单号
-		$refund_id = $resHandler->getParameter("refund_id");
-		//退款金额,以分为单位
-		$refund_fee = $resHandler->getParameter("refund_fee");
-		//退款状态
-		$refund_status = $resHandler->getParameter("refund_status");
 
+		//金额,以分为单位
+		$total_fee = $resHandler->getParameter("total_fee");
 
+		//支付结果
+		$trade_state = $resHandler->getParameter("trade_state");
 
-		echo "OK,refund_status=" . $refund_status . ",out_refund_no=" . $resHandler->getParameter("out_refund_no") . ",refund_fee=" . $resHandler->getParameter("refund_fee") . "<br>";
+		//支付成功
+		if($trade_state == "0") {
+		}
+
+		echo "OK,trade_state=" . $trade_state . ",is_split=" . $resHandler->getParameter("is_split") . ",is_refund=" . $resHandler->getParameter("is_refund") . "<br>";
 
 
 	} else {
