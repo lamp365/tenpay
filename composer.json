@@ -1,0 +1,42 @@
+{
+    "name": "kevin/tenpay",
+
+    "description": "经过改装后的一个腾讯财付通支付",
+
+    "type": "project",
+
+    "homepage": "http://dayblog.cn/",
+
+    "license": "xx-2.0",
+
+    "authors": [
+
+        {
+
+            "name": "刘建凡",
+
+            "email": "lamp365@163.com"
+
+        }
+
+    ],
+
+    "require": {
+
+        "php": ">=5.3.0"
+
+    },
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "kevin\\tenpay\\": "kevin/tenpay"
+        }
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
+    }
+}
+
