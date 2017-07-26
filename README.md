@@ -47,5 +47,5 @@ $ret = $qpayApi->reqQpay($params);
 $Qpay = new \kevin365\tenpay\qpay\QpayMchUtil();
 print_r($Qpay->xmlToArray($ret));
 //最后得到code_url生成二维码，用手机扫码可完成支付
-#composer地址  
-https://packagist.org/packages/kevin365/tenpay  
+#composer地址
+https://packagist.org/packages/kevin365/tenpay    
